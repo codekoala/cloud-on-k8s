@@ -2,11 +2,9 @@ FROM golang:1.11 as builder
 
 # Build
 WORKDIR /go/src/github.com/elastic/cloud-on-k8s/local-volume
+ENV GO111MODULE on
 
-COPY vendor/ vendor/
-COPY pkg/    pkg/
-COPY cmd/    cmd/
-COPY scripts/    scripts/
+COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 && \
     go build -o bin/driverclient ./cmd/driverclient && \

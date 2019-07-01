@@ -66,14 +66,18 @@ ifndef GCLOUD_PROJECT
 endif
 endif
 
+docker-build:
+	docker build -t $(IMG) .
+
+docker-push:
+	docker push $(IMG)
+
 docker-build-push: check-gke
 ifeq ($(KUBECTL_CLUSTER),minikube)
 	eval $$(minikube docker-env) ;\
-	docker build -t $(IMG) . && \
-    docker push $(IMG)
+	$(MAKE) docker-build docker-push
 else
-	docker build -t $(IMG) . && \
-	docker push $(IMG)
+	$(MAKE) docker-build docker-push
 endif
 
 ##
